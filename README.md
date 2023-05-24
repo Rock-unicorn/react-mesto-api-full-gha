@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 84.252.129.22
+IP 84.252.129.22
 
 Frontend https://boys.dont.cry.nomoredomains.monster/
 
