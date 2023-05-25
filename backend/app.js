@@ -11,16 +11,30 @@ const { validationLogin, validationCreateUser } = require('./middlewares/validat
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corsDomains = require('./utils/cors/cors');
 
+const corsOptions = {
+  origin: corsDomains,
+  optionsSuccessStatus: 200,
+};
+
 const { PORT = 3000 } = process.env;
 
 const app = express();
-app.use(cors(corsDomains));
 app.use(express.json());
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(helmet());
 app.use(requestLogger);
+app.use(cors(corsOptions));
+
+//краш-тест яп
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signin', validationLogin, login);
 app.post('/signup', validationCreateUser, createUser);
+
 app.use(auth);
 app.use('/', routes);
 app.use(errorLogger);
