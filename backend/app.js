@@ -25,7 +25,6 @@ app.use(helmet());
 app.use(requestLogger);
 app.use(cors(corsOptions));
 
-//краш-тест яп
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
