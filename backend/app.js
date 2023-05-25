@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
@@ -16,11 +17,11 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_URL } = process.env;
 
 const app = express();
 app.use(express.json());
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+mongoose.connect(DB_URL);
 app.use(helmet());
 app.use(requestLogger);
 app.use(cors(corsOptions));
