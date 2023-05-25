@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.boys.dont.cry.nomoredomains.rocks/";
+export const BASE_URL = "https://api.boys.dont.cry.nomoredomains.rocks";
 
 function handleResponse(res) {
     if (res.ok) {
