@@ -3,7 +3,6 @@ import { apiConfig } from "./utils";
 class Api {
   constructor(config) {
     this.url = config.baseUrl;
-    this.headers = config.headers;
   }
 
   _handleResponse = (res) => {
@@ -14,23 +13,35 @@ class Api {
   }
 
   getUserInfo() {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/users/me`, {
-      headers: this.headers
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
     })
       .then(this._handleResponse)
   }
 
   getInitialCards() {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/cards`, {
-      headers: this.headers
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
     })
       .then(this._handleResponse)
   }
 
   changeProfile(data) {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/users/me`, {
       method: 'PATCH',
-      headers: this.headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -40,9 +51,13 @@ class Api {
   }
 
   createNewCard(data) {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/cards`, {
       method: 'POST',
-      headers: this.headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -52,33 +67,49 @@ class Api {
   }
 
   deleteCard(cardId) {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this.headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
     })
       .then(this._handleResponse)
   }
 
   addLike(cardId) {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: this.headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
     })
       .then(this._handleResponse)
   }
 
   deleteLike(cardId) {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: this.headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
     })
       .then(this._handleResponse)
   }
 
   changeProfileAvatar(data) {
+    const token = localStorage.getItem('jwt');
     return fetch(`${this.url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this.headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         avatar: data.avatar
       })

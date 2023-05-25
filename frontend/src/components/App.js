@@ -32,6 +32,22 @@ function App() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        handleTokenCheck();
+    }, [])
+
+    const handleTokenCheck = () => {
+        const jwt = localStorage.getItem('jwt');
+        if (jwt) {
+            auth.checkToken(jwt).then(res => {
+                setLoggedIn(true);
+                setUserEmail(res.email);
+                navigate('/', { replace: true });
+            })
+                .catch((err) => console.log(err));
+        }
+    }
+
+    useEffect(() => {
         if (loggedIn) {
             Promise.all([api.getUserInfo(), api.getInitialCards()])
                 .then(([userData, initialCards]) => {
@@ -58,22 +74,6 @@ function App() {
             }
         }
     }, [isEditProfilePopupOpen, isAddPlacePopupOpen, isEditAvatarPopupOpen, isDeletePlacePopupOpen, selectedCard, isInfoTooltipOpen])
-
-    useEffect(() => {
-        handleTokenCheck();
-    }, [])
-
-    const handleTokenCheck = () => {
-        const jwt = localStorage.getItem('jwt');
-        if (jwt) {
-            auth.checkToken(jwt).then(res => {
-                setLoggedIn(true);
-                setUserEmail(res.data.email);
-                navigate('/', { replace: true });
-            })
-                .catch((err) => console.log(err));
-        }
-    }
 
     const handleRegisterSubmit = (email, password) => {
         auth.register(email, password)
@@ -133,7 +133,7 @@ function App() {
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(id => id === currentUser._id);
         if (isLiked) {
             api.deleteLike(card._id).then((newCard) => {
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -153,7 +153,7 @@ function App() {
 
     function handleDeleteCard(card) {
         api.deleteCard(card._id).then(() => {
-            setCards((state) => state.filter(c => c._id != card._id));
+            setCards((state) => state.filter(c => c._id !== card._id));
             setIsDeleteAvatarPopupOpen(null);
         })
             .catch((err) => {
